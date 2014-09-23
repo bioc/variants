@@ -115,14 +115,16 @@ To find the structural location of the variants, we'll use the
 locateVariants function with the TxDb.Hsapiens.UCSC.hg19.knownGene 
 package loaded eariler.
 
+```{r, eval = FALSE}     
 ## Use the 'region' argument to define the region
 ## of interest. See ?locateVariants for details.
 cds <- locateVariants(vcf, txdb, CodingVariants())
 five <- locateVariants(vcf, txdb, FiveUTRVariants())
 splice <- locateVariants(vcf, txdb, SpliceSiteVariants())
 intron <- locateVariants(vcf, txdb, IntronVariants())
+```
 
-```{r}     
+```{r}
 all <- locateVariants(vcf, txdb, AllVariants())
 ```
      
