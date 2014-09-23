@@ -19,9 +19,6 @@ PolyPhen database packages.
 
 <h2 id="sample-workflow">Sample Workflow</h2>
  
-Performed with Bioconductor 3.0 and R >= 3.1;
-VariantAnnotation 1.11.35.
-
 This workflow annotates variants found in the Transient Receptor Potential 
 Vanilloid (TRPV) gene family on chromosome 17. The VCF file is available in 
 the cgdv17 data package and contains Complete Genomics data for population 
@@ -68,13 +65,14 @@ Load the annotation package.
 ```{r}
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+txdb
 ```
 
 Modify the seqlevels (chromosomes) in the txdb to match
 those in the VCF file. This step is necessary because we want
 to use ranges from the txdb to extract a subset from the VCF.
 
-```{r}
+```{r, echo=FALSE}
 renameSeqlevels(txdb, gsub("chr", "", seqlevels(txdb)))
 keepSeqlevels(txdb, "17")
 ```
@@ -115,7 +113,7 @@ To find the structural location of the variants, we'll use the
 locateVariants function with the TxDb.Hsapiens.UCSC.hg19.knownGene 
 package loaded eariler.
 
-```{r, eval = FALSE}     
+```{r, eval=FALSE}     
 ## Use the 'region' argument to define the region
 ## of interest. See ?locateVariants for details.
 cds <- locateVariants(vcf, txdb, CodingVariants())
