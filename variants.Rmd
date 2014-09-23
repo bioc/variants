@@ -130,19 +130,18 @@ the data can be summarized by gene regardless of transcript.
 
 ```{r}     
 ## Did any variants match more than one gene?
-table(sapply(split(values(all)[["GENEID"]], values(all)[["QUERYID"]]), 
+table(sapply(split(mcols(all)$GENEID, mcols(all)$QUERYID), 
       function(x) length(unique(x)) > 1))
  
 ## Summarize the number of variants by gene:
-idx <- sapply(split(values(all)[["QUERYID"]], 
-              values(all)[["GENEID"]]), unique)
+idx <- sapply(split(mcols(all)$QUERYID, mcols(all)$GENEID), unique)
 sapply(idx, length)
  
 ## Summarize variant location by gene:
 sapply(names(idx), 
     function(nm) {
-        d <- all[values(all)[["GENEID"]] %in% nm, c("QUERYID", "LOCATION")]
-        table(values(d)[["LOCATION"]][duplicated(d) == FALSE])
+        d <- all[mcols(all)$GENEID %in% nm, c("QUERYID", "LOCATION")]
+        table(mcols(d)$LOCATION[duplicated(d) == FALSE])
     })
 ```
      
@@ -164,20 +163,18 @@ so multiple rows per variant are possible.
 
 ```{r}     
 ## Did any variants match more than one gene?
-table(sapply(split(values(aa)[["GENEID"]], values(aa)[["QUERYID"]]), 
-        function(x)
-            length(unique(x)) > 1))
+table(sapply(split(mcols(aa)$GENEID, mcols(aa)$QUERYID), 
+        function(x) length(unique(x)) > 1))
 
 ## Summarize the number of variants by gene:
-idx <- sapply(split(values(aa)[["QUERYID"]], values(aa)[["GENEID"]], 
-              drop=TRUE), unique)
+idx <- sapply(split(mcols(aa)$QUERYID, mcols(aa)$GENEID, drop=TRUE), unique)
 sapply(idx, length)
 
 ## Summarize variant consequence by gene:
 sapply(names(idx), 
        function(nm) {
-           d <- aa[values(aa)[["GENEID"]] %in% nm, c("QUERYID","CONSEQUENCE")]
-           table(values(d)[["CONSEQUENCE"]][duplicated(d) == FALSE])
+           d <- aa[mcols(aa)$GENEID %in% nm, c("QUERYID","CONSEQUENCE")]
+           table(mcols(d)$CONSEQUENCE[duplicated(d) == FALSE])
        })
 ```
     
@@ -206,7 +203,7 @@ cols
 
 ## Get the rsids for the non-synonymous variants from the
 ## predictCoding results
-rsid <- unique(names(aa)[values(aa)[["CONSEQUENCE"]] == "nonsynonymous"]) 
+rsid <- unique(names(aa)[mcols(aa)$CONSEQUENCE == "nonsynonymous"]) 
 
 ## Retrieve predictions for non-synonymous variants. Two of the six variants 
 ## are found in the PolyPhen database. 
