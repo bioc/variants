@@ -121,6 +121,8 @@ cds <- locateVariants(vcf, txdb, CodingVariants())
 five <- locateVariants(vcf, txdb, FiveUTRVariants())
 splice <- locateVariants(vcf, txdb, SpliceSiteVariants())
 intron <- locateVariants(vcf, txdb, IntronVariants())
+
+```{r}     
 all <- locateVariants(vcf, txdb, AllVariants())
 ```
      
