@@ -72,9 +72,9 @@ Modify the seqlevels (chromosomes) in the txdb to match
 those in the VCF file. This step is necessary because we want
 to use ranges from the txdb to extract a subset from the VCF.
 
-```{r, echo=FALSE}
-renameSeqlevels(txdb, gsub("chr", "", seqlevels(txdb)))
-keepSeqlevels(txdb, "17")
+```{r}
+txdb <- renameSeqlevels(txdb, gsub("chr", "", seqlevels(txdb)))
+txdb <- keepSeqlevels(txdb, "17")
 ```
 
 Create a list of transcripts by gene:
