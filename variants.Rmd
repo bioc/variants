@@ -3,7 +3,7 @@
 %\VignetteIndexEntry{Annotating Variants}
 -->
 
-# ![](/images/icons/help.gif)Annotating Variants 
+![](/images/icons/help.gif)Annotating Variants 
 
 The VariantAnnotation package has facilities for reading in all or portions 
 of Variant Call Format (VCF) files. Structural location information can be 
