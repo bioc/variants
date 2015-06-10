@@ -11,8 +11,8 @@ Author: Valerie Obenchain
 
 * [Background](#background) 
 * [Set Up](#setup) 
-* [TRPV Variants](#TRPV) 
-    * [Explore the VCF header data](#TRPV_header)
+* [Exploring variants in the TRPV gene family](#TRPV) 
+    * [Examine header data in a vcf file](#TRPV_header)
     * [Convert gene symbols to gene ids](#TRPV_symbols)
     * [Create gene ranges](#TRPV_ranges)
     * [Extract variant subsets](#TRPV_subset)
@@ -28,8 +28,8 @@ The VariantAnnotation package has facilities for reading in all or subsets
 of Variant Call Format (VCF) files. These text files contain meta-information
 lines, a header line and data lines each containing information about a 
 position in the genome. The format also may also contain genotype information 
-on samples for each position. More on the VCF format can be found in the
-specs (http://samtools.github.io/hts-specs/VCFv4.2.pdf).
+on samples for each position. More on the file format can be found in the
+[VCF specs](http://samtools.github.io/hts-specs/VCFv4.2.pdf).
 
 The 'locateVariants' function in the VariantAnnotation package identifies
 where a variant is located with respect to the gene model (e.g., exon, intron, 
@@ -69,7 +69,7 @@ source("http://bioconductor.org/biocLite.R")
 biocLite("mypackage")
 ```
 
-<h2 id="TRPV">TRPV Variants</h2>
+<h2 id="TRPV">Exploring variants in the TRPV gene family</h2>
 
 This workflow focuses on variants located in the Transient Receptor 
 Potential Vanilloid (TRPV) gene family on chromosome 17. Sample data are 
@@ -90,7 +90,7 @@ library(cgdv17)
 file <- system.file("vcf", "NA06985_17.vcf.gz", package = "cgdv17")
 ``` 
 
-<h3 id="TRPV_header">Explore the VCF header data</h3>
+<h3 id="TRPV_header">Examine header data in a vcf file</h3>
 
 To get an idea of what data are in the file we look at the header.
 scanVcfHeader() parses the file header into a VCFHeader object and the
@@ -385,8 +385,7 @@ basic(VEPParam())
 ```
 
 For more details on runtime options see the ?VEPParam man page and the
-Ensembl VEP web site
-(http://uswest.ensembl.org/info/docs/tools/vep/script/vep_options.html).
+[Ensembl VEP web site](http://uswest.ensembl.org/info/docs/tools/vep/script/vep_options.html).
 
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
 
