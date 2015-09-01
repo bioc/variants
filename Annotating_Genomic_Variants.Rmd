@@ -1,10 +1,8 @@
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Annotating Genomic Variants}
--->
-
 ---
 Author: Valerie Obenchain
+vignette: >
+  %\VignetteIndexEntry{Annotating Genomic Variants}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 <h1> Annotating Genomic Variants </h1>
