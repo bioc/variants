@@ -63,7 +63,8 @@ library(PolyPhen.Hsapiens.dbSNP131)
 Use biocLite() to get the packages you don't have installed:
 
 ```{r, eval=FALSE} 
-source("http://bioconductor.org/biocLite.R")
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
 biocLite("mypackage")
 ```
 
