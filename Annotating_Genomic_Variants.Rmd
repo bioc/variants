@@ -1,26 +1,12 @@
 ---
-Author: Valerie Obenchain
+title: Annotating Genomic Variants
+author: Valerie Obenchain
 vignette: >
   %\VignetteIndexEntry{Annotating Genomic Variants}
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-<h1> Annotating Genomic Variants </h1>
-
-* [Background](#background) 
-* [Set Up](#setup) 
-* [Exploring variants in the TRPV gene family](#TRPV) 
-    * [Examine header data in a vcf file](#TRPV_header)
-    * [Convert gene symbols to gene ids](#TRPV_symbols)
-    * [Create gene ranges](#TRPV_ranges)
-    * [Extract variant subsets](#TRPV_subset)
-    * [Variant location in the gene model](#TRPV_locate)
-    * [Amino acid coding changes in non-synonymous variants](#TRPV_predict)
-* [Annotating with the ensemblVEP package](#vep)
-* [Exploring Package Content](#content)
-* [sessionInfo()](#session)
-
-<h2 id="background">Background</h2>
+# Background
 
 The VariantAnnotation package has facilities for reading in all or subsets
 of Variant Call Format (VCF) files. These text files contain meta-information
@@ -37,7 +23,7 @@ can be investigated with the SIFT and PolyPhen database packages. We'll use
 these functions to learn about variants located on the TRPV gene on
 chromosome
 
-<h2 id="setup">Set Up</h2>
+# Set Up
 
 This workflow requires several different Bioconductor packages. Usage of each
 will be described in detail in the following sections.
@@ -68,7 +54,7 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("mypackage")
 ```
 
-<h2 id="TRPV">Exploring variants in the TRPV gene family</h2>
+# Exploring variants in the TRPV gene family
 
 This workflow focuses on variants located in the Transient Receptor 
 Potential Vanilloid (TRPV) gene family on chromosome 17. Sample data are 
@@ -89,7 +75,7 @@ library(cgdv17)
 file <- system.file("vcf", "NA06985_17.vcf.gz", package = "cgdv17")
 ``` 
 
-<h3 id="TRPV_header">Examine header data in a vcf file</h3>
+## Examine header data in a vcf file
 
 To get an idea of what data are in the file we look at the header.
 scanVcfHeader() parses the file header into a VCFHeader object and the
@@ -111,7 +97,7 @@ meta(hdr)$META
 
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
 
-<h3 id="TRPV_symbols">Convert gene symbols to gene ids</h3>
+## Convert gene symbols to gene ids
 
 Use the org.Hs.eg.db package to convert gene symbols to gene ids.
 
@@ -125,7 +111,7 @@ geneid
 ```
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
 
-<h3 id="TRPV_ranges">Create gene ranges</h3>
+## Create gene ranges
 
 We use the hg19 known gene track from UCSC to identify the TRPV gene ranges.
 These ranges will eventually be used to extract variants from a regions in
@@ -165,7 +151,7 @@ names(gnrng) <- geneid$SYMBOL
 
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
 
-<h3 id="TRPV_subset">Extract variant subsets</h3>
+## Extract variant subsets
 
 A ScanVcfParam object is used to retrieve data subsets. This object
 can specify genomic coordinates (ranges) or individual VCF elements.
@@ -188,7 +174,7 @@ geno(vcf)
 
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
 
-<h3 id="TRPV_locate">Variant location in the gene model</h3>
+## Variant location in the gene model
 
 The locateVariants function identifies where a variant falls with respect to
 gene structure, e.g., exon, utr, splice site, etc. We use the gene model
@@ -230,7 +216,7 @@ sapply(names(idx),
  
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
 
-<h3 id="TRPV_predict">Amino acid coding changes in non-synonymous variants</h3>
+## Amino acid coding changes in non-synonymous variants
 
 Amino acid coding for non-synonymous variants can be computed
 with the function predictCoding. The BSgenome.Hsapiens.UCSC.hg19 
@@ -274,7 +260,7 @@ resulted in a frameshift the consequence would be 'frameshift'. See
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
 
 
-<h2 id="vep">Annotating with the ensemblVEP package</h2>
+# Annotating with the ensemblVEP package
 
 The ensemblVEP package provides access to the online Ensembl Variant
 Effect Predictor (VEP tool).  The VEP tool ouputs predictions
@@ -388,7 +374,7 @@ For more details on runtime options see the ?VEPParam man page and the
 
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
 
-<h2 id="content">Exploring Package Content</h2>
+# Exploring Package Content
 
 Packages have extensive help pages, and include vignettes highlighting
 common use cases. The help pages and vignettes are available from
@@ -413,7 +399,7 @@ help.start()
 
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
 
-<h2 id="session">sessionInfo()</h2>
+# sessionInfo()
 
 ```{r}
 sessionInfo()
