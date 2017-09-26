@@ -3,7 +3,7 @@ Title: Annotating Genomic Variants
 Version: 1.0.0
 Date: 2017-09-05
 Authors@R: person(role="cre", "Bioconductor Package Maintainer", email = "maintainer@bioconductor.org")
-Descriptioni: Read and write VCF files. Identify structural location of variants and compute amino acid coding changes for non-synonymous variants. Use SIFT and PolyPhen database packages to predict consequence of amino acid coding changes 
+Description: Read and write VCF files. Identify structural location of variants and compute amino acid coding changes for non-synonymous variants. Use SIFT and PolyPhen database packages to predict consequence of amino acid coding changes 
 Depends: R (>= 3.3.0),
         VariantAnnotation,
         cgdv17,
