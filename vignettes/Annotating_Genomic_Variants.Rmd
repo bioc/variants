@@ -23,7 +23,7 @@ library('variants')
 **Bioconductor version**: `r BiocInstaller::biocVersion()`
 <br />
 **Package version**: `r packageVersion("variants")`
-<\p>
+</p>
 
 
 # Background
