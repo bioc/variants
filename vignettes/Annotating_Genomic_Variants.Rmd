@@ -12,8 +12,10 @@ output:
 ---
 
 # Version Info
-```{r, echo=FALSE}
+```{r, echo=FALSE, results="hide", warning=FALSE}
+suppressPackageStartupMessages({
 library('variants')
+})
 ```
 <p>
 **R version**: `r R.version.string`
