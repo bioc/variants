@@ -20,7 +20,7 @@ library('variants')
 <p>
 **R version**: `r R.version.string`
 <br />
-**Bioconductor version**: `r BiocInstaller::biocVersion()`
+**Bioconductor version**: `r BiocManager::version()`
 <br />
 **Package version**: `r packageVersion("variants")`
 </p>
@@ -57,12 +57,12 @@ library(BSgenome.Hsapiens.UCSC.hg19)
 library(PolyPhen.Hsapiens.dbSNP131)
 ```
 
-Use biocLite() to get the packages you don't have installed:
+Use BiocManager::install() to get the packages you don't have installed:
 
 ```{r, eval=FALSE}
-## try http:// if https:// URLs are not supported
-source("https://bioconductor.org/biocLite.R")
-biocLite("mypackage")
+if (!"BiocManager" %in% rownames(installed.packages()))
+     install.packages("BiocManager")
+BiocManager::install("mypackage")
 ```
 
 # Exploring variants in the TRPV gene family
