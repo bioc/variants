@@ -1,6 +1,6 @@
 Package: variants 
 Title: Annotating Genomic Variants
-Version: 1.4.0
+Version: 1.6.0
 Date: 2017-09-05
 Authors@R: person(role="cre", "Bioconductor Package Maintainer", email = "maintainer@bioconductor.org")
 Description: Read and write VCF files. Identify structural location of variants and compute amino acid coding changes for non-synonymous variants. Use SIFT and PolyPhen database packages to predict consequence of amino acid coding changes 
