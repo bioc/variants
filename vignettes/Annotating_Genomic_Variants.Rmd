@@ -101,7 +101,7 @@ geno(hdr)
 Variants in the VCF have been aligned to NCBI genome build GRCh37:
 
 ```{r}
-meta(hdr)$META
+meta(hdr)
 ```
 
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
