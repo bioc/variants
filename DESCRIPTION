@@ -1,12 +1,20 @@
 Package: variants 
 Title: Annotating Genomic Variants
-Version: 1.15.0
+Version: 1.15.1
 Date: 2017-09-05
-Authors@R: person(role="cre", "Bioconductor Package Maintainer", email = "maintainer@bioconductor.org")
-Description: Read and write VCF files. Identify structural location of variants and compute amino acid coding changes for non-synonymous variants. Use SIFT and PolyPhen database packages to predict consequence of amino acid coding changes 
+Authors@R: c(
+    person("Valerie", "Obenchain", role = "aut"),
+    person("Martin", "Morgan", role = "ctb"),
+    person(
+        "Bioconductor Package Maintainer", role="cre",
+        email = "maintainer@bioconductor.org"
+    ))
+Description: Read and write VCF files. Identify structural location of
+    variants and compute amino acid coding changes for non-synonymous
+    variants. Use SIFT and PolyPhen database packages to predict
+    consequence of amino acid coding changes.
 Depends: R (>= 3.3.0),
         VariantAnnotation,
-        cgdv17,
         org.Hs.eg.db,
         TxDb.Hsapiens.UCSC.hg19.knownGene,
         BSgenome.Hsapiens.UCSC.hg19,
@@ -18,4 +26,4 @@ VignetteBuilder: knitr
 biocViews: ImmunoOncologyWorkflow, AnnotationWorkflow, Workflow
 Suggests: knitr, rmarkdown, BiocStyle
 NeedsCompilation: no
-URL: https://www.bioconductor.org/help/workflows/variants/
+URL: https://bioconductor.org/help/workflows/variants/

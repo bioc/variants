@@ -3,6 +3,7 @@ title: Annotating Genomic Variants
 author:
 - name: Valerie Obenchain
   affiliation: Fred Hutchinson Cancer Research Center, 1100 Fairview Ave. N., P.O. Box 19024, Seattle, WA, USA 98109-1024
+- name: Martin Morgan
 date: 5 Sept 2017
 vignette: >
   %\VignetteIndexEntry{Annotating Genomic Variants}
@@ -14,17 +15,14 @@ output:
 # Version Info
 ```{r, echo=FALSE, results="hide", warning=FALSE}
 suppressPackageStartupMessages({
-library('variants')
+    library('variants')
 })
 ```
-<p>
-**R version**: `r R.version.string`
-<br />
-**Bioconductor version**: `r BiocManager::version()`
-<br />
-**Package version**: `r packageVersion("variants")`
-</p>
-
+**R version**: `r R.version.string` <br />
+**Bioconductor version**: `r BiocManager::version()` <br />
+**Package version**: `r packageVersion("variants")` <br />
+**Created**: 5 Sept 2017 <br />
+**Revised**: 7 January 2021
 
 # Background
 
@@ -50,7 +48,6 @@ will be described in detail in the following sections.
 
 ```{r, eval=FALSE}
 library(VariantAnnotation)
-library(cgdv17)
 library(org.Hs.eg.db)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 library(BSgenome.Hsapiens.UCSC.hg19)
@@ -68,20 +65,13 @@ BiocManager::install("mypackage")
 # Exploring variants in the TRPV gene family
 
 This workflow focuses on variants located in the Transient Receptor
-Potential Vanilloid (TRPV) gene family on chromosome 17. Sample data are
-from the Bioconductor cgdv17 experimental data package which contains
-Complete Genomics Diversity panel data for chromosome 17 on 46 individuals.
-For more background on how these data were curated see the package vignette.
-
-```{r, eval=FALSE}
-browseVignettes("cgdv17")
-```
-
-We use a VCF file from the package that is a subset of chromosome 17 for a
-single individual from the CEU population.
+Potential Vanilloid (TRPV) gene family on chromosome 17. We use a VCF
+file included in the "variants" package and representing "Complete
+Genomics Diversity" panel data for chromosome 17 on 46 individuals for
+a single individual from the CEU population.
 
 ```{r}
-file <- system.file("vcf", "NA06985_17.vcf.gz", package = "cgdv17")
+file <- system.file("vcf", "NA06985_17.vcf.gz", package = "variants")
 ```
 
 ## Examine header data in a vcf file
@@ -113,8 +103,9 @@ Use the org.Hs.eg.db package to convert gene symbols to gene ids.
 ```{r}
 ## get entrez ids from gene symbols
 genesym <- c("TRPV1", "TRPV2", "TRPV3")
-geneid <- select(org.Hs.eg.db, keys=genesym, keytype="SYMBOL",
-		 columns="ENTREZID")
+geneid <- select(
+    org.Hs.eg.db, keys=genesym, keytype="SYMBOL", columns="ENTREZID"
+)
 geneid
 ```
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
@@ -139,14 +130,13 @@ or overlap operation the chromosome names (also called sesqlevels) need to
 match. We will modify the txdb to match the VCF file.
 
 ```{r}
-txdb <- renameSeqlevels(txdb, gsub("chr", "", seqlevels(txdb)))
-txdb <- keepSeqlevels(txdb, "17")
+txdb <- keepSeqlevels(txdb, "chr17")
 ```
 
 Create a list of transcripts by gene:
 
 ```{r}
-txbygene = transcriptsBy(txdb, "gene")
+txbygene <- transcriptsBy(txdb, "gene")
 ```
 
 Create the gene ranges for the TRPV genes
@@ -166,17 +156,31 @@ Extractions of ranges (vs fields) requires a tabix index.
 See ?indexTabix for details.
 
 ```{r}
+seqinfo(gnrng)
+seqlevels(gnrng) <- sub("chr", "", seqlevels(gnrng))
+genome(gnrng) <- "B37"
+seqinfo(gnrng)
+## seqlevelsStyle(gnrng) <- "NCBI"
 param <- ScanVcfParam(which = gnrng, info = "DP", geno = c("GT", "cPd"))
 param
 
 ## Extract the TRPV ranges from the VCF file
-vcf <- readVcf(file, "hg19", param)
+vcf <- readVcf(file, param = param)
 ## Inspect the VCF object with the 'fixed', 'info' and 'geno' accessors
 vcf
 
 head(fixed(vcf))
 
 geno(vcf)
+```
+
+```{r}
+seqinfo(vcf)
+genome(vcf) <- "hg19"
+seqlevels(vcf) <- sub("([[:digit:]]+)", "chr\\1", seqlevels(vcf))
+seqinfo(vcf)
+## seqlevelsStyle(vcf) <- "UCSC"
+vcf <- keepSeqlevels(vcf, "chr17")
 ```
 
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
@@ -206,19 +210,20 @@ the data can be summarized by gene regardless of transcript.
 
 ```{r}
 ## Did any variants match more than one gene?
-table(sapply(split(mcols(all)$GENEID, mcols(all)$QUERYID),
-      function(x) length(unique(x)) > 1))
+geneByQuery <- sapply(split(all$GENEID, all$QUERYID), unique)
+table(lengths(geneByQuery) > 1)
 
 ## Summarize the number of variants by gene:
-idx <- sapply(split(mcols(all)$QUERYID, mcols(all)$GENEID), unique)
-sapply(idx, length)
+queryByGene <- sapply(split(all$QUERYID, all$GENEID), unique)
+table(lengths(queryByGene) > 1)
+
+sapply(queryByGene, length)
 
 ## Summarize variant location by gene:
-sapply(names(idx),
-    function(nm) {
-	d <- all[mcols(all)$GENEID %in% nm, c("QUERYID", "LOCATION")]
-	table(mcols(d)$LOCATION[duplicated(d) == FALSE])
-    })
+sapply(names(queryByGene), function(nm) {
+	d <- all[all$GENEID %in% nm, c("QUERYID", "LOCATION")]
+	table(d$LOCATION[duplicated(d) == FALSE])
+})
 ```
 
 <p class="back_to_top">[ <a href="#top">Back to top</a> ]</p>
@@ -231,8 +236,6 @@ package is used as the source of the reference alleles. Variant
 alleles are provided by the user.
 
 ```{r}
-seqlevelsStyle(vcf) <- "UCSC"
-seqlevelsStyle(txdb) <- "UCSC"
 aa <- predictCoding(vcf, txdb, Hsapiens)
 ```
 
@@ -242,19 +245,18 @@ so multiple rows per variant are possible.
 
 ```{r}
 ## Did any variants match more than one gene?
-table(sapply(split(mcols(aa)$GENEID, mcols(aa)$QUERYID),
-	function(x) length(unique(x)) > 1))
+aageneByQuery <- split(aa$GENEID, aa$QUERYID)
+table(lengths(sapply(aageneByQuery, unique)) > 1)
 
 ## Summarize the number of variants by gene:
-idx <- sapply(split(mcols(aa)$QUERYID, mcols(aa)$GENEID, drop=TRUE), unique)
-sapply(idx, length)
+aaaqueryByGene <- split(aa$QUERYID, aa$GENEID, drop=TRUE)
+sapply(aaaqueryByGene, length)
 
 ## Summarize variant consequence by gene:
-sapply(names(idx),
-       function(nm) {
-	   d <- aa[mcols(aa)$GENEID %in% nm, c("QUERYID","CONSEQUENCE")]
-	   table(mcols(d)$CONSEQUENCE[duplicated(d) == FALSE])
-       })
+sapply(names(aaaqueryByGene), function(nm) {
+    d <- aa[aa$GENEID %in% nm, c("QUERYID","CONSEQUENCE")]
+    table(d$CONSEQUENCE[duplicated(d) == FALSE])
+})
 ```
 
 The variants 'not translated' are explained by the warnings thrown when
