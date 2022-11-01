@@ -1,6 +1,6 @@
 Package: variants 
 Title: Annotating Genomic Variants
-Version: 1.21.0
+Version: 1.22.0
 Date: 2017-09-05
 Authors@R: c(
     person("Valerie", "Obenchain", role = "aut"),
